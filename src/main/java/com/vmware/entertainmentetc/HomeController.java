@@ -20,6 +20,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.api.LikeOperations;
 import org.springframework.social.facebook.api.Reference;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,8 +44,13 @@ public class HomeController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
-		List<Reference> friends = facebook.friendOperations().getFriends();
-		model.addAttribute("friends", friends);
+//		List<Reference> friends = facebook.friendOperations().getFriends();
+//		model.addAttribute("friends", friends);
+		LikeOperations likes = facebook.likeOperations();
+		model.addAttribute("music", likes.getMusic());
+		model.addAttribute("books", likes.getBooks());
+		model.addAttribute("movies", likes.getMovies());
+		model.addAttribute("television", likes.getTelevision());
 		return "home";
 	}
 
