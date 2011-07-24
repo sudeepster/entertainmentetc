@@ -1,7 +1,9 @@
-package com.vmware.entertainmentetc.services;
+package com.vmware.entertainmentetc.services.bestbuy;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 
 /**
  * Service for locating nearby Best Buy stores
@@ -29,17 +32,37 @@ public class BestBuyLocatorService {
 	// get by lat/long
 	// priv method for making API calls
 	
+	// Radius to look in (in miles)
+	private static final String distance = "5";
+	private static final String reqBase = "http://api.remix.bestbuy.com/v1/stores";
 	
-	public BestBuyStore findStoreByZip(String zipCode) {
-		
+	// TODO: fix this with global app properties
+	private static final String apiKey = "?apiKey=5tyye5xz9zfw7csuu7ssnduw";
+	
+	public Iterable<BestBuyStore> findStoresByZip(String zipCode) throws ApiRequestException, IOException {
+		String thisReq = reqBase + "(area(\"" + zipCode + "\"," + distance + "))" + apiKey;
+		return parseApiResponse(makeApiRequest(thisReq));
 	}
 	
-	public BestBuyStore findStoreByCityState(String city, String state) {
-		
-	}
+	//public BestBuyStore findStoresByCityState(String city, String state) throws ApiRequestException, IOException {
+	//	
+	//}
 	
-	public BestBuyStore findStoreByLatLng(String lat, String lng) {
+	//public BestBuyStore findStoresByLatLng(String lat, String lng) throws ApiRequestException, IOException {
+	//	
+	//}
+	
+	
+	private InputStream makeApiRequest(String reqString) throws IOException, ApiRequestException {
+		HttpURLConnection req = (HttpURLConnection) new URL(reqString).openConnection();
 		
+		int responseCode = req.getResponseCode();
+		if (responseCode != 200) {
+			// Crap.
+			throw new ApiRequestException();
+		}
+		
+		return req.getInputStream();
 	}
 	
 	
@@ -103,74 +126,6 @@ public class BestBuyLocatorService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return new ArrayList<BestBuyStore>();
-		}
-	}
-	
-	public static class BestBuyStore {
-		private String storeId;
-		private String name;
-		private String address;
-		private String city;
-		private String region;
-		private String zipCode;
-		private String lat;
-		private String lng;
-		private String phone;
-		
-		
-		public String getStoreId() {
-			return storeId;
-		}
-		public void setStoreId(String storeId) {
-			this.storeId = storeId;
-		}
-		public String getName() {
-			return name;
-		}
-		public void setName(String name) {
-			this.name = name;
-		}
-		public String getAddress() {
-			return address;
-		}
-		public void setAddress(String address) {
-			this.address = address;
-		}
-		public String getCity() {
-			return city;
-		}
-		public void setCity(String city) {
-			this.city = city;
-		}
-		public String getRegion() {
-			return region;
-		}
-		public void setRegion(String region) {
-			this.region = region;
-		}
-		public String getZipCode() {
-			return zipCode;
-		}
-		public void setZipCode(String zipCode) {
-			this.zipCode = zipCode;
-		}
-		public String getLat() {
-			return lat;
-		}
-		public void setLat(String lat) {
-			this.lat = lat;
-		}
-		public String getLng() {
-			return lng;
-		}
-		public void setLng(String lng) {
-			this.lng = lng;
-		}
-		public String getPhone() {
-			return phone;
-		}
-		public void setPhone(String phone) {
-			this.phone = phone;
 		}
 	}
 }
