@@ -37,7 +37,7 @@ public class BestBuyLocatorService {
 	private static final String reqBase = "http://api.remix.bestbuy.com/v1/stores";
 	
 	// TODO: fix this with global app properties
-	private static final String apiKey = "?apiKey=5tyye5xz9zfw7csuu7ssnduw";
+	private static final String apiKey = "?apiKey=";
 	
 	public Iterable<BestBuyStore> findStoresByZip(String zipCode) throws ApiRequestException, IOException {
 		String thisReq = reqBase + "(area(\"" + zipCode + "\"," + distance + "))" + apiKey;
