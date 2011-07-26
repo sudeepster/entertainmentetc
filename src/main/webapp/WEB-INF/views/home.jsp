@@ -9,7 +9,7 @@
 		<li><a href="<c:url value="/signout" />">Sign Out</a></li>
 	</ul>
 	
-	<h3>Movies Available Near You</h3>
+	<h3><c:out value="${movieName}" /> Available Near You</h3>
 	<table>
 		<tr>
 			<th>Name</th>

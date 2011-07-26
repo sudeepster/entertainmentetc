@@ -65,9 +65,11 @@ public class HomeController {
 			UserLike aMovie = likes.getMovies().get(0);
 			// TODO: find the user's actual zip code
 			StoresResponse stores = bby.getProductInNearbyStores(aMovie.getName(), "94304");
+			model.addAttribute("movieName", aMovie.getName());
+			
 			
 			// Pick a store
-			if (!stores.list().isEmpty()) {
+			if ((stores != null) && (!stores.list().isEmpty())) {
 				Store aStore = stores.list().get(0);
 				model.addAttribute("products", aStore.getProducts());
 			}

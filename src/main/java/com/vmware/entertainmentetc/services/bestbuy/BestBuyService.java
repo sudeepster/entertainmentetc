@@ -12,7 +12,7 @@ import com.mattwilliamsnyc.service.remix.StoresResponse;
 
 public class BestBuyService {
 	// TODO: bump this out into app's properties
-	private static final String apiKey = "blarg";
+	private static final String apiKey = "";
 	
 	// TODO: let user specify this
 	private static final String maxDist = "10";
@@ -46,6 +46,10 @@ public class BestBuyService {
 		}
 		
 		// Next, search for nearby stores that have those SKUs
+		if (SKUs.isEmpty()) {
+			// TODO: this is probably a crappy way to fix this
+			return null;
+		}
 		StringBuilder skuString = new StringBuilder();
 		Iterator<String> it = SKUs.iterator();
 		skuString.append(it.next());
@@ -64,6 +68,6 @@ public class BestBuyService {
 	// Properly escape a string for putting into a URL. For now, focuses
 	// on removing spaces
 	private String urlify(String url) {
-		return url.replace(" ", "%20");
+		return url.replace(" ", "%20").replace(",", "%20");
 	}
 }
