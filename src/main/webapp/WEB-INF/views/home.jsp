@@ -8,6 +8,24 @@
 	<ul>
 		<li><a href="<c:url value="/signout" />">Sign Out</a></li>
 	</ul>
+	
+	<h3>Movies Available Near You</h3>
+	<table>
+		<tr>
+			<th>Name</th>
+			<th>Price</th>
+			<th>SKU</th>
+		</tr>
+		<c:forEach items="${products}" var="product">
+			<tr>
+				<td><c:out value="${product.name}" /></td>
+				<td><c:out value="${product.salePrice}" /></td>
+				<td><c:out value="${product.sku}" /></td>
+			</tr>
+		</c:forEach>
+	</table>
+	
+	
 	<h3>Your Likes</h3>
  	<ul>
 	<c:forEach items="${music}" var="music">
