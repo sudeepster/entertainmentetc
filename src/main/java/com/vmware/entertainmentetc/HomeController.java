@@ -24,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mattwilliamsnyc.service.remix.RemixException;
 import com.mattwilliamsnyc.service.remix.Store;
@@ -48,32 +49,44 @@ public class HomeController {
 		this.facebook = facebook;
 		this.bby = new BestBuyService();
 	}
+	
+	@RequestMapping(value="/movie", method=RequestMethod.GET)
+	public String movie(Model model, @RequestParam String movieTitle) throws RemixException {
+		model.addAttribute("movieTitle", movieTitle);
+		
+		StoresResponse stores = bby.getProductInNearbyStores(movieTitle, "94304");
+		if ((stores != null) && (!stores.list().isEmpty())) {
+			Store aStore = stores.list().get(0);
+			model.addAttribute("products", aStore.getProducts());
+		}
+		return "movie";
+	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) throws RemixException {
 //		List<Reference> friends = facebook.friendOperations().getFriends();
 //		model.addAttribute("friends", friends);
 		LikeOperations likes = facebook.likeOperations();
-		model.addAttribute("music", likes.getMusic());
-		model.addAttribute("books", likes.getBooks());
+		//model.addAttribute("music", likes.getMusic());
+		//model.addAttribute("books", likes.getBooks());
 		model.addAttribute("movies", likes.getMovies());
 		model.addAttribute("television", likes.getTelevision());
 		
-		// getMovies returns a list of UserLike objects
-		// conveniently, we can pick one and see if it's available
-		if (!likes.getMovies().isEmpty()) {
-			UserLike aMovie = likes.getMovies().get(0);
-			// TODO: find the user's actual zip code
-			StoresResponse stores = bby.getProductInNearbyStores(aMovie.getName(), "94304");
-			model.addAttribute("movieName", aMovie.getName());
-			
-			
-			// Pick a store
-			if ((stores != null) && (!stores.list().isEmpty())) {
-				Store aStore = stores.list().get(0);
-				model.addAttribute("products", aStore.getProducts());
-			}
-		}
+//		// getMovies returns a list of UserLike objects
+//		// conveniently, we can pick one and see if it's available
+//		if (!likes.getMovies().isEmpty()) {
+//			UserLike aMovie = likes.getMovies().get(0);
+//			// TODO: find the user's actual zip code
+//			StoresResponse stores = bby.getProductInNearbyStores(aMovie.getName(), "94304");
+//			model.addAttribute("movieName", aMovie.getName());
+//			
+//			
+//			// Pick a store
+//			if ((stores != null) && (!stores.list().isEmpty())) {
+//				Store aStore = stores.list().get(0);
+//				model.addAttribute("products", aStore.getProducts());
+//			}
+//		}
 		return "home";
 	}
 

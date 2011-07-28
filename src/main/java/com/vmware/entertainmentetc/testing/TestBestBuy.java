@@ -13,7 +13,7 @@ public class TestBestBuy {
 	 */
 	public static void main(String[] args) throws Exception {
 		BestBuyService svc = new BestBuyService();
-		StoresResponse response = svc.getProductInNearbyStores("wii jeopardy", "94304");
+		StoresResponse response = svc.getProductInNearbyStores("good news for people who love bad news", "94304");
 		
 		if (!response.isError()) {
 			System.out.println("Search results follow:");

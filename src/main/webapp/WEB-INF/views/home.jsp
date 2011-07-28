@@ -9,7 +9,7 @@
 		<li><a href="<c:url value="/signout" />">Sign Out</a></li>
 	</ul>
 	
-	<h3><c:out value="${movieName}" /> Available Near You</h3>
+	<!-- <h3><c:out value="${movieName}" /> Available Near You</h3>
 	<table>
 		<tr>
 			<th>Name</th>
@@ -23,11 +23,11 @@
 				<td><c:out value="${product.sku}" /></td>
 			</tr>
 		</c:forEach>
-	</table>
+	</table> -->
 	
 	
-	<h3>Your Likes</h3>
- 	<ul>
+	<h3>Your Favorite Movies and TV Shows</h3>
+ 	<!-- <ul>
 	<c:forEach items="${music}" var="music">
 		<li><img src="http://graph.facebook.com/<c:out value="${music.id}"/>/picture" align="middle"/><c:out value="${music.name}"/></li>
 	</c:forEach>
@@ -36,15 +36,15 @@
 	<c:forEach items="${books}" var="books">
 		<li><img src="http://graph.facebook.com/<c:out value="${books.id}"/>/picture" align="middle"/><c:out value="${books.name}"/></li>
 	</c:forEach>
-	</ul>
+	</ul> -->
 	<ul>
 	<c:forEach items="${movies}" var="movies">
-		<li><img src="http://graph.facebook.com/<c:out value="${movies.id}"/>/picture" align="middle"/><c:out value="${movies.name}"/></li>
+		<li><img src="http://graph.facebook.com/<c:out value="${movies.id}"/>/picture" align="middle"/><a href="/movie?movieTitle=${movies.name}"><c:out value="${movies.name}"/></a></li>
 	</c:forEach>
 	</ul>
 	<ul>
 	<c:forEach items="${television}" var="television">
-		<li><img src="http://graph.facebook.com/<c:out value="${television.id}"/>/picture" align="middle"/><c:out value="${television.name}"/></li>
+		<li><img src="http://graph.facebook.com/<c:out value="${television.id}"/>/picture" align="middle"/><a href="/movie?movieTitle=${television.name}"><c:out value="${television.name}"/></a></li>
 	</c:forEach>
 	</ul>
 

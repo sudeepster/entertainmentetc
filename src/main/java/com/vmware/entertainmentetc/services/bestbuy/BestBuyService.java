@@ -11,17 +11,21 @@ import com.mattwilliamsnyc.service.remix.RemixException;
 import com.mattwilliamsnyc.service.remix.StoresResponse;
 
 public class BestBuyService {
+	//@Inject
+	//private Environment environment;
+	
 	// TODO: bump this out into app's properties
 	private static final String apiKey = "";
 	
 	// TODO: let user specify this
 	private static final String maxDist = "10";
 	
-	
+	// TODO: can this be injected somehow?
 	private final Remix remix;
 	
 	// TODO: check appropriate use of constructor in Spring service
 	public BestBuyService() {
+		//remix = new Remix(environment.getProperty("bestbuy.apiKey"));
 		remix = new Remix(apiKey);
 	}
 	
@@ -36,7 +40,7 @@ public class BestBuyService {
 		List<String> productFilters = new ArrayList<String>();
 		
 		//storeFilters.add("area(" + zipCode + "," + maxDist + ")");
-		productFilters.add(urlify("search=" + productSearch));
+		productFilters.add(urlify("search=" + decommaify(productSearch)));
 		
 		//return remix.getStoreAvailability(storeFilters, productFilters);
 		List<String> SKUs = new ArrayList<String>();
@@ -59,6 +63,8 @@ public class BestBuyService {
 		
 		productFilters.clear();
 		productFilters.add(urlify("sku in(" + skuString + ")"));
+		// Here, skuString needs to keep its commas for the API to work right
+		System.out.println("SKU string: " + urlify("sku in(" + skuString + ")"));
 		List<String> storeFilters = new ArrayList<String>();
 		storeFilters.add("area(" + zipCode + "," + maxDist + ")");
 		
@@ -68,6 +74,11 @@ public class BestBuyService {
 	// Properly escape a string for putting into a URL. For now, focuses
 	// on removing spaces
 	private String urlify(String url) {
-		return url.replace(" ", "%20").replace(",", "%20");
+		return url.replace(" ", "%20");//.replace(",", "%20");
+	}
+	
+	// Remove commas from a search string
+	private String decommaify(String url) {
+		return url.replace(",", " ");
 	}
 }
