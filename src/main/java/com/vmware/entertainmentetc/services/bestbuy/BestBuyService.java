@@ -31,8 +31,8 @@ public class BestBuyService {
 		remix = new Remix(apiKey);
 	}
 	
-	public List<ProductStores> getProductStores(String productSearch, String location) throws RemixException {
-		StoresResponse r = getProductInNearbyStores(productSearch, location);
+	public List<ProductStores> getProductStores(String productSearch, String location, String category) throws RemixException {
+		StoresResponse r = getProductInNearbyStores(productSearch, location, category);
 		
 		List<ProductStores> l = new ArrayList<ProductStores>();
 		
@@ -45,7 +45,7 @@ public class BestBuyService {
 		return l;
 	}
 	
-	public StoresResponse getProductInNearbyStores(String productSearch, String zipCode) throws RemixException {
+	public StoresResponse getProductInNearbyStores(String productSearch, String zipCode, String category) throws RemixException {
 		if (zipCode == null) {
 			return null;
 		}
@@ -60,6 +60,7 @@ public class BestBuyService {
 		
 		//storeFilters.add("area(" + zipCode + "," + maxDist + ")");
 		productFilters.add(urlify("search=" + decommaify(productSearch)));
+		productFilters.add("categoryPath.id=" + category);
 		
 		//return remix.getStoreAvailability(storeFilters, productFilters);
 		List<String> SKUs = new ArrayList<String>();

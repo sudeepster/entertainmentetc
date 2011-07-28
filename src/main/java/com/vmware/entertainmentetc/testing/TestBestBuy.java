@@ -15,7 +15,7 @@ public class TestBestBuy {
 	public static void main(String[] args) throws Exception {
 		BestBuyService svc = new BestBuyService();
 		MapQuestService mq = new MapQuestService();
-		StoresResponse response = svc.getProductInNearbyStores("wii jeopardy", mq.getLatLngFromCityState("palo alto, california"));
+		StoresResponse response = svc.getProductInNearbyStores("harry potter", mq.getLatLngFromCityState("palo alto, ca"), "cat02015");
 		
 		if (!response.isError()) {
 			System.out.println("Search results follow:");

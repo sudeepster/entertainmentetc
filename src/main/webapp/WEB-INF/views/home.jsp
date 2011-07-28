@@ -42,12 +42,12 @@
 	</ul> -->
 	<ul>
 	<c:forEach items="${movies}" var="movies">
-		<li><img src="http://graph.facebook.com/<c:out value="${movies.id}"/>/picture" align="middle"/><a href="/movie?movieTitle=${movies.name}"><c:out value="${movies.name}"/></a></li>
+		<li><img src="http://graph.facebook.com/<c:out value="${movies.id}"/>/picture" align="middle"/><a href="/movie?movieTitle=${movies.name}&category=cat02015"><c:out value="${movies.name}"/></a></li>
 	</c:forEach>
 	</ul>
 	<ul>
 	<c:forEach items="${television}" var="television">
-		<li><img src="http://graph.facebook.com/<c:out value="${television.id}"/>/picture" align="middle"/><a href="/movie?movieTitle=${television.name}"><c:out value="${television.name}"/></a></li>
+		<li><img src="http://graph.facebook.com/<c:out value="${television.id}"/>/picture" align="middle"/><a href="/movie?movieTitle=${television.name}&category=cat02015"><c:out value="${television.name}"/></a></li>
 	</c:forEach>
 	</ul>
 

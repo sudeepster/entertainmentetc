@@ -54,10 +54,10 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/movie", method=RequestMethod.GET)
-	public String movie(Model model, @RequestParam String movieTitle) throws RemixException {
+	public String movie(Model model, @RequestParam String movieTitle, @RequestParam String category) throws RemixException {
 		model.addAttribute("movieTitle", movieTitle);
 		
-		List<ProductStores> ps = bby.getProductStores(movieTitle, mq.getLatLngFromCityState(facebook.userOperations().getUserProfile().getLocation().getName()));
+		List<ProductStores> ps = bby.getProductStores(movieTitle, mq.getLatLngFromCityState(facebook.userOperations().getUserProfile().getLocation().getName()), category);
 		
 		model.addAttribute("productStores", ps);
 		
