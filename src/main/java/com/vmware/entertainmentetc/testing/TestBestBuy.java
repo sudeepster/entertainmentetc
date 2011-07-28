@@ -5,6 +5,7 @@ import com.mattwilliamsnyc.service.remix.Product;
 import com.mattwilliamsnyc.service.remix.Store;
 import com.mattwilliamsnyc.service.remix.StoresResponse;
 import com.vmware.entertainmentetc.services.bestbuy.BestBuyService;
+import com.vmware.entertainmentetc.services.mapquest.MapQuestService;
 
 public class TestBestBuy {
 
@@ -13,7 +14,8 @@ public class TestBestBuy {
 	 */
 	public static void main(String[] args) throws Exception {
 		BestBuyService svc = new BestBuyService();
-		StoresResponse response = svc.getProductInNearbyStores("good news for people who love bad news", "94304");
+		MapQuestService mq = new MapQuestService();
+		StoresResponse response = svc.getProductInNearbyStores("wii jeopardy", mq.getLatLngFromCityState("palo alto, california"));
 		
 		if (!response.isError()) {
 			System.out.println("Search results follow:");

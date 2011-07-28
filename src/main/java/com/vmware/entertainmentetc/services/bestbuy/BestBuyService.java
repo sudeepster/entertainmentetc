@@ -30,6 +30,9 @@ public class BestBuyService {
 	}
 	
 	public StoresResponse getProductInNearbyStores(String productSearch, String zipCode) throws RemixException {
+		if (zipCode == null) {
+			return null;
+		}
 		//Remix remix = new Remix(apiKey);
 		
 		// TODO: fix this so that it actually works

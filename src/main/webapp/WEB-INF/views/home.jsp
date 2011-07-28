@@ -25,8 +25,11 @@
 		</c:forEach>
 	</table> -->
 	
+	<h3>You are here: <c:out value="${location}" /></h3>
+	
 	
 	<h3>Your Favorite Movies and TV Shows</h3>
+	Click on a title to find it near you:
  	<!-- <ul>
 	<c:forEach items="${music}" var="music">
 		<li><img src="http://graph.facebook.com/<c:out value="${music.id}"/>/picture" align="middle"/><c:out value="${music.name}"/></li>

@@ -10,6 +10,11 @@
 <body>
 		<h1><i><c:out value="${movieTitle}" /></i> Available Near You</h1>
 		
+		<h3>Nearby store:</h3>
+		<c:out value="${store.name}" /><br />
+		<c:out value="${store.address}" /><br />
+		<c:out value="${store.city}" /> <c:out value="${store.region}" /> <c:out value="${store.postalCode}"  />
+		
 		<table>
 			<tr>
 				<th>Name</th>

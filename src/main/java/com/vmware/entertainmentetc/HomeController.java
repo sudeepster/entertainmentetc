@@ -19,7 +19,6 @@ import javax.inject.Inject;
 
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.LikeOperations;
-import org.springframework.social.facebook.api.UserLike;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +29,7 @@ import com.mattwilliamsnyc.service.remix.RemixException;
 import com.mattwilliamsnyc.service.remix.Store;
 import com.mattwilliamsnyc.service.remix.StoresResponse;
 import com.vmware.entertainmentetc.services.bestbuy.BestBuyService;
+import com.vmware.entertainmentetc.services.mapquest.MapQuestService;
 
 /**
  * Simple little @Controller that invokes Facebook and renders the result.
@@ -43,20 +43,23 @@ public class HomeController {
 	
 	// TODO: fix service invocation
 	private final BestBuyService bby;
+	private final MapQuestService mq;
 	
 	@Inject
 	public HomeController(Facebook facebook) {
 		this.facebook = facebook;
 		this.bby = new BestBuyService();
+		this.mq = new MapQuestService();
 	}
 	
 	@RequestMapping(value="/movie", method=RequestMethod.GET)
 	public String movie(Model model, @RequestParam String movieTitle) throws RemixException {
 		model.addAttribute("movieTitle", movieTitle);
 		
-		StoresResponse stores = bby.getProductInNearbyStores(movieTitle, "94304");
+		StoresResponse stores = bby.getProductInNearbyStores(movieTitle, mq.getLatLngFromCityState(facebook.userOperations().getUserProfile().getLocation().getName()));
 		if ((stores != null) && (!stores.list().isEmpty())) {
 			Store aStore = stores.list().get(0);
+			model.addAttribute("store", aStore);
 			model.addAttribute("products", aStore.getProducts());
 		}
 		return "movie";
@@ -71,6 +74,7 @@ public class HomeController {
 		//model.addAttribute("books", likes.getBooks());
 		model.addAttribute("movies", likes.getMovies());
 		model.addAttribute("television", likes.getTelevision());
+		model.addAttribute("location", facebook.userOperations().getUserProfile().getLocation().getName());
 		
 //		// getMovies returns a list of UserLike objects
 //		// conveniently, we can pick one and see if it's available
