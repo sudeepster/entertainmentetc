@@ -10,7 +10,7 @@
 <body>
 		<h1><i><c:out value="${movieTitle}" /></i> Available Near You</h1>
 		
-		<h3>Nearby store:</h3>
+		<!-- <h3>Nearby store:</h3>
 		<c:out value="${store.name}" /><br />
 		<c:out value="${store.address}" /><br />
 		<c:out value="${store.city}" /> <c:out value="${store.region}" /> <c:out value="${store.postalCode}"  />
@@ -27,6 +27,22 @@
 					<td><c:out value="${product.salePrice}" /></td>
 					<td><c:out value="${product.sku}" /></td>
 				</tr>		
+			</c:forEach>
+		</table> -->
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Price</th>
+				<th>Store</th>
+				<th>Store Address</th>
+			</tr>
+			<c:forEach items="${productStores}" var="productStore">
+				<tr>
+					<td><c:out value="${productStore.product.name}"/></td>
+					<td><c:out value="${productStore.product.salePrice}"/></td>
+					<td><c:out value="${productStore.store.name}"/></td>
+					<td><c:out value="${productStore.store.address}"/></td>
+				</tr>
 			</c:forEach>
 		</table>
 	</body>

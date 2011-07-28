@@ -8,7 +8,9 @@ import com.mattwilliamsnyc.service.remix.Product;
 import com.mattwilliamsnyc.service.remix.ProductsResponse;
 import com.mattwilliamsnyc.service.remix.Remix;
 import com.mattwilliamsnyc.service.remix.RemixException;
+import com.mattwilliamsnyc.service.remix.Store;
 import com.mattwilliamsnyc.service.remix.StoresResponse;
+import com.vmware.entertainmentetc.model.ProductStores;
 
 public class BestBuyService {
 	//@Inject
@@ -27,6 +29,20 @@ public class BestBuyService {
 	public BestBuyService() {
 		//remix = new Remix(environment.getProperty("bestbuy.apiKey"));
 		remix = new Remix(apiKey);
+	}
+	
+	public List<ProductStores> getProductStores(String productSearch, String location) throws RemixException {
+		StoresResponse r = getProductInNearbyStores(productSearch, location);
+		
+		List<ProductStores> l = new ArrayList<ProductStores>();
+		
+		for (Store s: r.list()) {
+			for (Product p: s.getProducts()) {
+				l.add(new ProductStores(p, s));
+			}
+		}
+		
+		return l;
 	}
 	
 	public StoresResponse getProductInNearbyStores(String productSearch, String zipCode) throws RemixException {

@@ -15,6 +15,8 @@
  */
 package com.vmware.entertainmentetc;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.social.facebook.api.Facebook;
@@ -26,8 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mattwilliamsnyc.service.remix.RemixException;
-import com.mattwilliamsnyc.service.remix.Store;
-import com.mattwilliamsnyc.service.remix.StoresResponse;
+import com.vmware.entertainmentetc.model.ProductStores;
 import com.vmware.entertainmentetc.services.bestbuy.BestBuyService;
 import com.vmware.entertainmentetc.services.mapquest.MapQuestService;
 
@@ -56,12 +57,15 @@ public class HomeController {
 	public String movie(Model model, @RequestParam String movieTitle) throws RemixException {
 		model.addAttribute("movieTitle", movieTitle);
 		
-		StoresResponse stores = bby.getProductInNearbyStores(movieTitle, mq.getLatLngFromCityState(facebook.userOperations().getUserProfile().getLocation().getName()));
-		if ((stores != null) && (!stores.list().isEmpty())) {
-			Store aStore = stores.list().get(0);
-			model.addAttribute("store", aStore);
-			model.addAttribute("products", aStore.getProducts());
-		}
+		List<ProductStores> ps = bby.getProductStores(movieTitle, mq.getLatLngFromCityState(facebook.userOperations().getUserProfile().getLocation().getName()));
+		
+		model.addAttribute("productStores", ps);
+		
+//		if ((stores != null) && (!stores.list().isEmpty())) {
+//			Store aStore = stores.list().get(0);
+//			model.addAttribute("store", aStore);
+//			model.addAttribute("products", aStore.getProducts());
+//		}
 		return "movie";
 	}
 
