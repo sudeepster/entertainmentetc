@@ -13,18 +13,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 public class MapQuestService {
-	// TODO: bump this out into the application's properties
-	private static final String apiKey = "";
+	private final String apiKey;
 	
-	// TODO: check using constructor in spring service
-	public MapQuestService() {
-		
+	public MapQuestService(String apiKey) {
+		this.apiKey = apiKey;
 	}
 	
 	public String getLatLngFromCityState(String cityState) {
 		try {
 			String url = "http://www.mapquestapi.com/geocoding/v1/address?key=" + apiKey + "&location=" + cityState + "&outFormat=xml&maxResults=1";
-			//System.out.println("Fetching URL " + url);
 			HttpURLConnection req = (HttpURLConnection) new URL(urlify(url)).openConnection();
 			
 			int responseCode = req.getResponseCode();

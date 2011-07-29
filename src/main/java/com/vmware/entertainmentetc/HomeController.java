@@ -42,59 +42,32 @@ public class HomeController {
 
 	private final Facebook facebook;
 	
-	// TODO: fix service invocation
 	private final BestBuyService bby;
 	private final MapQuestService mq;
 	
 	@Inject
-	public HomeController(Facebook facebook) {
+	public HomeController(Facebook facebook, BestBuyService bestBuyService, MapQuestService mapQuestService) {
 		this.facebook = facebook;
-		this.bby = new BestBuyService();
-		this.mq = new MapQuestService();
+		this.bby = bestBuyService;
+		this.mq = mapQuestService;
 	}
 	
 	@RequestMapping(value="/movie", method=RequestMethod.GET)
 	public String movie(Model model, @RequestParam String movieTitle, @RequestParam String category) throws RemixException {
-		model.addAttribute("movieTitle", movieTitle);
-		
 		List<ProductStores> ps = bby.getProductStores(movieTitle, mq.getLatLngFromCityState(facebook.userOperations().getUserProfile().getLocation().getName()), category);
-		
 		model.addAttribute("productStores", ps);
-		
-//		if ((stores != null) && (!stores.list().isEmpty())) {
-//			Store aStore = stores.list().get(0);
-//			model.addAttribute("store", aStore);
-//			model.addAttribute("products", aStore.getProducts());
-//		}
+		model.addAttribute("movieTitle", movieTitle);
 		return "movie";
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) throws RemixException {
-//		List<Reference> friends = facebook.friendOperations().getFriends();
-//		model.addAttribute("friends", friends);
+
 		LikeOperations likes = facebook.likeOperations();
-		//model.addAttribute("music", likes.getMusic());
-		//model.addAttribute("books", likes.getBooks());
 		model.addAttribute("movies", likes.getMovies());
 		model.addAttribute("television", likes.getTelevision());
 		model.addAttribute("location", facebook.userOperations().getUserProfile().getLocation().getName());
-		
-//		// getMovies returns a list of UserLike objects
-//		// conveniently, we can pick one and see if it's available
-//		if (!likes.getMovies().isEmpty()) {
-//			UserLike aMovie = likes.getMovies().get(0);
-//			// TODO: find the user's actual zip code
-//			StoresResponse stores = bby.getProductInNearbyStores(aMovie.getName(), "94304");
-//			model.addAttribute("movieName", aMovie.getName());
-//			
-//			
-//			// Pick a store
-//			if ((stores != null) && (!stores.list().isEmpty())) {
-//				Store aStore = stores.list().get(0);
-//				model.addAttribute("products", aStore.getProducts());
-//			}
-//		}
+
 		return "home";
 	}
 

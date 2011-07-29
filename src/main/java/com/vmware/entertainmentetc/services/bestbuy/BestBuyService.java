@@ -13,26 +13,21 @@ import com.mattwilliamsnyc.service.remix.StoresResponse;
 import com.vmware.entertainmentetc.model.ProductStores;
 
 public class BestBuyService {
-	//@Inject
-	//private Environment environment;
-	
-	// TODO: bump this out into app's properties
-	private static final String apiKey = "";
-	
 	// TODO: let user specify this
 	private static final String maxDist = "10";
-	
-	// TODO: can this be injected somehow?
+
 	private final Remix remix;
 	
-	// TODO: check appropriate use of constructor in Spring service
-	public BestBuyService() {
-		//remix = new Remix(environment.getProperty("bestbuy.apiKey"));
+	public BestBuyService(String apiKey) {
 		remix = new Remix(apiKey);
 	}
 	
 	public List<ProductStores> getProductStores(String productSearch, String location, String category) throws RemixException {
 		StoresResponse r = getProductInNearbyStores(productSearch, location, category);
+		
+		if (r == null) {
+			return new ArrayList<ProductStores>();
+		}
 		
 		List<ProductStores> l = new ArrayList<ProductStores>();
 		
@@ -49,20 +44,13 @@ public class BestBuyService {
 		if (zipCode == null) {
 			return null;
 		}
-		//Remix remix = new Remix(apiKey);
-		
-		// TODO: fix this so that it actually works
-		//   - Request products by name, get SKUs
-		//   - Request stores with those SKUs in stock
-		
-		//List<String> storeFilters = new ArrayList<String>();
+
+		// First, get SKUs for matching products
 		List<String> productFilters = new ArrayList<String>();
 		
-		//storeFilters.add("area(" + zipCode + "," + maxDist + ")");
 		productFilters.add(urlify("search=" + decommaify(productSearch)));
 		productFilters.add("categoryPath.id=" + category);
 		
-		//return remix.getStoreAvailability(storeFilters, productFilters);
 		List<String> SKUs = new ArrayList<String>();
 		ProductsResponse matchingProducts = remix.getProducts(productFilters);
 		for (Product product: matchingProducts.list()) {
@@ -94,7 +82,7 @@ public class BestBuyService {
 	// Properly escape a string for putting into a URL. For now, focuses
 	// on removing spaces
 	private String urlify(String url) {
-		return url.replace(" ", "%20");//.replace(",", "%20");
+		return url.replace(" ", "%20");
 	}
 	
 	// Remove commas from a search string
